@@ -1,0 +1,140 @@
+Lab 1: Git Basics
+Step 1: Git Configuration
+bash
+# Check Git version
+git --version
+# Output: git version 2.xx.x (version number will vary)
+
+# Configure user
+git config --global user.name "Your Name"
+git config --global user.email "your.email@example.com"
+
+# Verify configuration
+git config --list
+# Output will show all config settings including your name and email
+Step 2: Notepad++ Integration
+bash
+# Add Notepad++ to PATH (done in Windows Environment Variables)
+
+# Verify Notepad++ works
+notepad++
+
+# Create alias
+echo "alias np='notepad++'" >> ~/.bashrc
+source ~/.bashrc
+
+# Set Notepad++ as default editor
+git config --global core.editor "'C:/Program Files/Notepad++/notepad++.exe' -multiInst -nosession"
+
+# Verify editor config
+git config --global -e
+Step 3: Add File to Repository
+bash
+# Create new project
+mkdir GitDemo
+cd GitDemo
+git init
+
+# Verify initialization
+ls -a
+# Output should show .git directory
+
+# Create and add file
+echo "Welcome to Git" > welcome.txt
+git status
+# Output shows welcome.txt as untracked
+
+git add welcome.txt
+git status
+# Output shows welcome.txt as changes to be committed
+
+git commit -m "Initial commit with welcome.txt"
+git status
+# Output shows clean working directory
+Lab 2: Git Ignore
+bash
+# Create log file and folder
+touch error.log
+mkdir logs
+touch logs/access.log
+
+# Create .gitignore file
+echo "*.log" > .gitignore
+echo "logs/" >> .gitignore
+
+# Check status
+git status
+# Output should only show .gitignore as new file, not the .log files or logs directory
+
+git add .gitignore
+git commit -m "Added gitignore file"
+Lab 3: Branching and Merging
+bash
+# Branching
+git branch GitNewBranch
+git branch -a
+# Output shows all branches with * marking current branch
+
+git checkout GitNewBranch
+echo "Branch content" > branchfile.txt
+git add branchfile.txt
+git commit -m "Added file in branch"
+
+# Merging
+git checkout master
+git diff master GitNewBranch
+# Output shows differences
+
+git merge GitNewBranch
+# Output shows merge successful
+
+git log --oneline --graph --decorate
+# Output shows merge commit graphically
+
+git branch -d GitNewBranch
+Lab 4: Conflict Resolution
+bash
+# Verify clean state
+git status
+
+# Create branch and file
+git branch GitWork
+git checkout GitWork
+echo "<hello>Branch version</hello>" > hello.xml
+git add hello.xml
+git commit -m "Added hello.xml in branch"
+
+# Make conflicting change in master
+git checkout master
+echo "<hello>Master version</hello>" > hello.xml
+git add hello.xml
+git commit -m "Added hello.xml in master"
+
+# View differences
+git log --oneline --graph --decorate --all
+# Shows divergent branches
+
+# Attempt merge (will cause conflict)
+git merge GitWork
+# Output shows conflict in hello.xml
+
+# Resolve conflict (edit hello.xml to contain both or choose one)
+# After resolving:
+git add hello.xml
+git commit -m "Resolved merge conflict"
+
+# Clean up
+git branch -d GitWork
+Lab 5: Clean Up and Push to Remote
+bash
+# Verify clean state
+git status
+
+# List branches
+git branch -a
+
+# Pull from remote
+git pull origin master
+
+# Push changes
+git push origin master
